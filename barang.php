@@ -262,7 +262,6 @@ require 'fungsi/function.php';
                                                 <th>Nama_Barang</th>
                                                 <th>Deskripsi</th>
                                                 <th>Stok</th>
-                                                <th>Satuan</th>
                                                 <th>Aksi</th>
 	      									</tr>
 	      								</thead>
@@ -280,7 +279,7 @@ require 'fungsi/function.php';
                                                 $deskripsi = $data['deskripsi'];
                                                 $stock = $data['stock'];
                                                 $idb = $data['Idbarang'];                                
-                                                $satuan = $data['satuan'];  
+                                                  
 
                                             ?>
 	      									<tr>
@@ -288,7 +287,6 @@ require 'fungsi/function.php';
                                                 <td><strong><?=$namabarang;?></strong></td>
                                                 <td><?=$deskripsi;?></td>
                                                 <td><?=$stock;?></td>
-                                                <td><?=$satuan;?></td>
 	      										<td>
 	      											<a href="#">
 	      												<i class="fas fa-edit" data-toggle="modal" data-target="#edit<?=$idb;?>"></i>
@@ -316,20 +314,6 @@ require 'fungsi/function.php';
                                                 <input type="text" name="namabarang" value="<?=$namabarang;?>" class="form-control" required>
                                                 <br>
                                                 <input type="text" name="deskripsi" value="<?=$deskripsi;?>" class="form-control" required>
-                                                <br>
-                                                <select name="satuan" class="form-control" >
-                                                        <option selected><?=$satuan;?></option>
-                                                            <?php
-                                                            $ambildatasatuan = mysqli_query($conn, "select * from satuan group by namasatuan order by namasatuan ");
-
-                                                            while ($data=mysqli_fetch_array($ambildatasatuan)){
-                                                            ?>
-                                                            
-                                                            <option value="<?=$data['namasatuan'];?>"><?php echo $data['namasatuan'];?></option>
-                                                            <?php
-                                                            }
-                                                            ?>
-                                                </select>
                                                 <br>
                                                 <input type="hidden" name="idb" value="<?=$idb;?>">
                                                 <button type="submit" class="btn btn-primary" name="updatebarang"> Submit </button>
@@ -417,21 +401,6 @@ require 'fungsi/function.php';
           <br>
 		  Jumlah
           <input type="number" name="stock" class="form-control" placeholder="Stock" required>
-          <br>
-		  Satuan
-          <select name="satuan" class="form-control" >
-          <option selected>Pilih satuan</option>
-            <?php
-            $ambildatasatuan = mysqli_query($conn, "select * from satuan group by namasatuan order by namasatuan ");
-
-            while ($data=mysqli_fetch_array($ambildatasatuan)){
-            ?>
-            
-            <option value="<?=$data['namasatuan'];?>"><?php echo $data['namasatuan'];?></option>
-            <?php
-            }
-            ?>
-            </select>
            <br>
           <button type="submit" class="btn btn-primary" name="addnewbarang"> Submit </button>
         </div>

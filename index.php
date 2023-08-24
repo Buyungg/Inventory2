@@ -310,7 +310,7 @@ require 'fungsi/function.php';
                                                 <th>Nama_Barang</th>
                                                 <th>Deskripsi</th>
                                                 <th>Stok</th>
-                                                <th>Satuan</th>
+                                                
 	      									</tr>
 	      								</thead>
 	      								<tbody align="center">
@@ -328,8 +328,7 @@ require 'fungsi/function.php';
                                                 $namabarang = $data['namabarang'];
                                                 $deskripsi = $data['deskripsi'];
                                                 $stock = $data['stock'];
-                                                $idb = $data['Idbarang'];                                
-                                                $satuan = $data['satuan'];  
+                                                $idb = $data['Idbarang'];                                 
 
                                             ?>
 
@@ -338,7 +337,6 @@ require 'fungsi/function.php';
 											  <td><strong><a href="detail.php?id=<?=$idb;?>"><?=$namabarang;?></a></strong></td>
                                                 <td><?=$deskripsi;?></td>
                                                 <td><?=$stock;?></td>
-                                                <td><?=$satuan;?></td>
 	      									</tr>
 
 

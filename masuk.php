@@ -241,6 +241,14 @@ require 'fungsi/function.php';
 	      						</div>
 	      						<!-- /.card-header -->
 	      						<div class="card-body">
+								  <div class="col">
+                                        <form method="post" class="form-inline">
+                                    <input type="date" name="tgl_mulai" class="form-control">
+                                    <input type="date" name="tgl_selesai" class="form-control ml-3">
+												<button type="submit" name="filter_tgl" class="btn btn-info ml-3" > Filter </button>
+                                        </form>
+                                    </div>
+									<br>
 	      							<table id="example1" class="table table-bordered table-striped">
 	      								<thead align="center">
 	      									<tr>
@@ -250,6 +258,7 @@ require 'fungsi/function.php';
                                                 <th>Penerima</th>
                                                 <th>Harga</th>
                                                 <th>Jumlah</th>
+												<th>Satuan</th>
                                                 <th>Total</th>
                                                 <th>AKSI</th>
 	      									</tr>
@@ -262,15 +271,16 @@ require 'fungsi/function.php';
 											if(isset($_POST['filter_tgl'])){
 												$mulai = $_POST['tgl_mulai'];
 												$selesai = $_POST['tgl_selesai'];
+												
 
-												if($mulai!=null || $selesai!=null){
-													$ambilsemuadatamasuk= mysqli_query($conn, "select * from masuk m, barang s where s.Idbarang = m.Idbarang and tanggalm BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)" );
+												if($mulai!=null || $selesai!=null || $keterangan!=null){
+													$ambilsemuadatamasuk= mysqli_query($conn, "select * from masuk m, barang s where s.Idbarang = m.Idbarang and tanggalm BETWEEN '$mulai' and DATE_ADD('$selesai',INTERVAL 1 DAY)  order by Idmasuk DESC" );
 												} else {
-													$ambilsemuadatamasuk= mysqli_query($conn, "select * from masuk m, barang s where s.Idbarang = m.Idbarang");
+													$ambilsemuadatamasuk= mysqli_query($conn, "select * from masuk m, barang s where s.Idbarang = m.Idbarang order by Idmasuk DESC");
 												}
 												
 											} else {
-												$ambilsemuadatamasuk= mysqli_query($conn, "select * from masuk m, barang s where s.Idbarang = m.Idbarang");
+												$ambilsemuadatamasuk= mysqli_query($conn, "select * from masuk m, barang s where s.Idbarang = m.Idbarang order by Idmasuk DESC");
 											}
 
 											$i = 1;
@@ -282,6 +292,7 @@ require 'fungsi/function.php';
 												$keterangan = $data['keterangan'];
 												$harga = $data['harga'];
 												$qty = $data['qty'];
+												$satuan = $data['satuan'];
 												$total = $data['total'];
 											?>
 
@@ -292,11 +303,9 @@ require 'fungsi/function.php';
                                                 <td><?=$keterangan;?></td>
                                                 <td>Rp. <?=number_format($harga, 0, '','.' );?></td>
                                                 <td><?=$qty;?></td>
+												<td><?=$satuan;?></td>
                                                 <td>Rp. <?=number_format($total, 0, '','.');?></td>
 	      										<td>
-	      											<a href="#">
-	      												<i class="fas fa-info" style="color: black" data-toggle="modal" data-target="#modal-info"></i>
-	      											</a>
 	      											<a href="#">
 	      												<i  class="fas fa-edit" data-toggle="modal" data-target="#edit<?=$idm;?>"></i>
 	      											</a>
@@ -323,16 +332,31 @@ require 'fungsi/function.php';
                                                 <!-- Modal body -->
                                                 <form method="post">
                                                 <div class="modal-body">
-												Nama Barang
+												<label for="">Nama Barang</label>
 												<input type="text" name="namabarang" value="<?=$namabarang;?>" readonly class="form-control" required>
 												<br>
-                                                Penerima
+                                                <label for="">Penerima</label>
                                                 <input type="text" name="keterangan" value="<?=$keterangan;?>" class="form-control" required>
                                                 <br>
-                                                Jumlah
+                                                <label for="">Jumlah</label>
                                                 <input type="number" name="qty" value="<?=$qty;?>" class="form-control" required>
                                                 <br>
-												Harga
+												<label for="">Satuan</label>
+												<select name="satuan" class="form-control" >
+                                                        <option selected><?=$satuan;?></option>
+                                                            <?php
+                                                            $ambildatasatuan = mysqli_query($conn, "select * from satuan group by namasatuan order by namasatuan ");
+
+                                                            while ($data=mysqli_fetch_array($ambildatasatuan)){
+                                                            ?>
+                                                            
+                                                            <option value="<?=$data['namasatuan'];?>"><?php echo $data['namasatuan'];?></option>
+                                                            <?php
+                                                            }
+                                                            ?>
+                                                </select>
+                                                <br>
+												<label for="">Nama Barang</label>
                                                 <input type="text" name="harga" value="<?=$harga;?>" class="form-control" required>
                                                 <br>
                                                 <input type="hidden" name="idb" value="<?=$idb;?>">
@@ -439,6 +463,22 @@ require 'fungsi/function.php';
             				<label for="">Jumlah</label>
             				<input type="number" name="qty" placeholder="Jumlah Masuk" class="form-control" required>
             			</div>
+						<div class="form-group">
+            				<label for="">Satuan</label>
+						<select name="satuan" class="form-control" >
+						<option selected>Pilih satuan</option>
+						<?php
+						$ambildatasatuan = mysqli_query($conn, "select * from satuan group by namasatuan order by namasatuan ");
+
+						while ($data=mysqli_fetch_array($ambildatasatuan)){
+						?>
+						
+						<option value="<?=$data['namasatuan'];?>"><?php echo $data['namasatuan'];?></option>
+						<?php
+						}
+						?>
+						</select>
+						</div>
 						<div class="form-group">
             				<label for="">Harga</label>
             				<input type="text" name="harga" placeholder="Harga Satuan" class="form-control" required>

@@ -249,12 +249,13 @@ require 'fungsi/function.php';
                                                 <th>Tanggal</th>
                                                 <th>Penerima</th>
                                                 <th>Quantity</th>
+												<th>Satuan</th>
                                                 <th>Aksi</th>
 	      									</tr>
 	      								</thead>
 	      								<tbody align="center">
 										  <?php
-                                                if(isset($_POST['filter_tgl'])){
+												 if(isset($_POST['filter_tgl'])){
                                                     $mulai = $_POST['tgl_mulai'];
                                                     $selesai = $_POST['tgl_selesai'];
     
@@ -276,6 +277,7 @@ require 'fungsi/function.php';
                                                 $tanggal = $data['tanggalk'];
                                                 $penerima = $data['penerima'];
                                                 $qty = $data['qty'];
+												$satuan = $data['satuan'];
 
                                             
 
@@ -286,6 +288,7 @@ require 'fungsi/function.php';
                                                 <td><?=$tanggal;?></td>
                                                 <td><?=$penerima;?></td>
                                                 <td><?=$qty;?></td>
+												<td><?=$satuan;?></td>
 	      										<td>
 	      											<a href="#">
 	      												<i class="fas fa-edit" data-toggle="modal" data-target="#edit<?=$idk;?>"></i>
@@ -314,6 +317,21 @@ require 'fungsi/function.php';
                                                 <br>
                                                 Jumlah
                                                 <input type="number" name="qty" value="<?=$qty;?>" class="form-control" required>
+                                                <br>
+												Satuan
+												<select name="satuan" class="form-control" >
+                                                        <option selected><?=$satuan;?></option>
+                                                            <?php
+                                                            $ambildatasatuan = mysqli_query($conn, "select * from satuan group by namasatuan order by namasatuan ");
+
+                                                            while ($data=mysqli_fetch_array($ambildatasatuan)){
+                                                            ?>
+                                                            
+                                                            <option value="<?=$data['namasatuan'];?>"><?php echo $data['namasatuan'];?></option>
+                                                            <?php
+                                                            }
+                                                            ?>
+                                                </select>
                                                 <br>
                                                 <input type="hidden" name="idb" value="<?=$idb;?>">
                                                 <input type="hidden" name="idk" value="<?=$idk;?>">
@@ -413,6 +431,21 @@ require 'fungsi/function.php';
           <br>
           <input type="number" name="qty" placeholder="Jumlah Keluar" class="form-control" required>
           <br>
+		  Satuan
+          <select name="satuan" class="form-control" >
+          <option selected>Pilih satuan</option>
+            <?php
+            $ambildatasatuan = mysqli_query($conn, "select * from satuan group by namasatuan order by namasatuan ");
+
+            while ($data=mysqli_fetch_array($ambildatasatuan)){
+            ?>
+            
+            <option value="<?=$data['namasatuan'];?>"><?php echo $data['namasatuan'];?></option>
+            <?php
+            }
+            ?>
+            </select>
+			<br>
           <button type="submit" class="btn btn-primary" name="barangkeluar"> Submit </button>
         </div>
         </form>

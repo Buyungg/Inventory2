@@ -342,7 +342,10 @@ $satuan = $fetch['satuan'];
 											  	<th>No</th>
                                                 <th>Tanggal</th>
                                                 <th>Penerima</th>
+												<th>Harga</th>
                                                 <th>Jumlah</th>
+												<th>Satuan</th>
+												<th>Total</th>
 	      									</tr>
 	      								</thead>
 	      								<tbody align="center">
@@ -352,13 +355,20 @@ $satuan = $fetch['satuan'];
                                              while($fetch = mysqli_fetch_array($ambildatamasuk)){
                                                  $tanggal = $fetch['tanggalm'];
                                                  $keterangan = $fetch['keterangan'];
-                                                 $quantity = $fetch['qty'];                               
+												 $harga = $fetch['harga'];
+                                                 $quantity = $fetch['qty'];
+												 $satuan = $fetch['satuan'];
+												 $total = $fetch['total'];    
+												                            
                                             ?>
                                             <tr>
                                                 <td><?=$i++;?></td>
                                                 <td><?=$tanggal;?></td>
                                                 <td><?=$keterangan;?></td>
+												<td>Rp. <?=number_format($harga, 0, '','.' );?></td>
                                                 <td><?=$quantity;?></td>
+												<td><?=$satuan;?></td>
+												<td>Rp. <?=number_format($total, 0, '','.');?></td>
                                             </tr>
                                         <?php
                                             }
@@ -376,6 +386,7 @@ $satuan = $fetch['satuan'];
                                                 <th>Tanggal</th>
                                                 <th>Penerima</th>
                                                 <th>Jumlah</th>
+												<th>Satuan</th>
 	      									</tr>
 	      								</thead>
 	      								<tbody align="center">
@@ -385,13 +396,15 @@ $satuan = $fetch['satuan'];
                                              while($fetch = mysqli_fetch_array($ambildatakeluar)){
                                                  $tanggal = $fetch['tanggalk'];
                                                  $penerima = $fetch['penerima'];
-                                                 $quantity = $fetch['qty'];                               
+                                                 $quantity = $fetch['qty'];         
+												 $satuan = $fetch['satuan'];                       
                                             ?>
                                             <tr>
                                                 <td><?=$i++;?></td>
                                                 <td><?=$tanggal;?></td>
                                                 <td><?=$penerima;?></td>
                                                 <td><?=$quantity;?></td>
+												<td><?=$satuan;?></td>
                                             </tr>
                                         <?php
                                             }

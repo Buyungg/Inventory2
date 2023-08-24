@@ -1,9 +1,12 @@
+<?php
+require 'fungsi/function.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Jenis</title>
+	<title>Satuan</title>
 
 	<!-- Google Font: Source Sans Pro -->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -241,29 +244,63 @@
 	      							<table id="example1" class="table table-bordered table-striped">
 	      								<thead align="center">
 	      									<tr>
-	      										<th>No</th>
-	      										<th>Nomor Barang</th>
-	      										<th>Barang</th>
-	      										<th>Aksi</th>
+											 	<th>No</th>
+                                                <th>Jenis Barang</th>
+                                                <th>AKSI</th>
 	      									</tr>
 	      								</thead>
 	      								<tbody align="center">
+										  <?php
+                                            $ambilsemuadatajenis = mysqli_query($conn, "select * from jenis");
+                                            $i =1;
+                                            while($data=mysqli_fetch_array($ambilsemuadatajenis)){
+                                                
+                                                
+
+
+                                                $idj = $data['Idjenis'];
+                                                $namajenis = $data['namajenis'];
+                                                
+
+                                            ?>
+
 	      									<tr>
-	      										<td>1</td>
-	      										<td>123456</td>
-	      										<td>Sabun</td>
+											  	<td><?=$i++;?></td>
+                                                <td><?=$namajenis;?></td>
 	      										<td>
 	      											<a href="#">
-	      												<i class="fas fa-info" style="color: black" data-toggle="modal" data-target="#modal-info"></i>
-	      											</a>
-	      											<a href="#">
-	      												<i class="fas fa-edit" data-toggle="modal" data-target="#modal-edit"></i>
-	      											</a>
-	      											<a href="#">
-	      												<i class="fas fa-trash" style="color: red" data-toggle="modal" data-target="#modal-hapus"></i>
+	      												<i class="fas fa-trash" style="color: red" data-toggle="modal" data-target="#delete<?=$idj;?>"></i>
 	      											</a>
 	      										</td>
 	      									</tr>
+											<!-- Delete -->
+											<div class="modal fade" id="delete<?=$idj;?>">
+                                            <div class="modal-dialog">
+                                            <div class="modal-content">
+                                            
+                                                <!-- Modal Header -->
+                                                <div class="modal-header">
+                                                <h4 class="modal-title">Hapus Satuan</h4>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+                                                
+                                                <!-- Modal body -->
+                                                <form method="post">
+                                                <div class="modal-body">
+                                                Apakah Anda Yakin Ingin Menghapus (<?=$namajenis;?>) ?
+                                                <input type="hidden" name="Idjenis" value="<?=$idj;?>">
+                                                <br>
+                                                <br>
+                                                <button type="submit" class="btn btn-danger" name="hapusjenis"> Hapus </button>
+                                                </div>
+                                                </form>
+                                            </div>
+                                            </div>
+                                        </div>
+
+                                        <?php
+                                            }
+                                        ?>
 	      								</tbody>
 	      							</table>
 	      						</div>
@@ -300,26 +337,17 @@
     	<div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Tambah Barang</h4>
+              <h4 class="modal-title">Tambah Jenis Barang</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form>
+            <form method="post">
             	<div class="modal-body">
-            			<div class="form-group">
-            				<label for="">Nomor Barang</label>
-            				<input type="text" class="form-control" id="" placeholder="Tambahkan Barang ..." required>
-            			</div>
-            			<div class="form-group">
-            				<label for="">Jenis</label>
-            				<input type="text" class="form-control" id="" placeholder="Barang ..." required>
-            			</div>
-            		</div>
-            		<div class="modal-footer justify-content-between">
-            			<button type="button" class="btn btn-danger" data-dismiss="modal"> Kembali</button>
-            			<button type="button" class="btn btn-success swalDefaultSuccess"> Simpan</button>
-            		</div>
+				<input type="text" name="namajenis" placeholder="Satuan" class="form-control" required>
+				<br>
+				<button type="submit" class="btn btn-primary" name="tambahjenis"> Submit </button>
+            	</div>
             	</div>
             </form>
           <!-- /.modal-content -->
@@ -328,7 +356,7 @@
       </div>
       <!-- /.modal -->
 
-      <!-- Modal Tambah Data -->
+      <!-- Modal Info Data -->
 	<div class="modal fade" id="modal-info">
     	<div class="modal-dialog">
           <div class="modal-content">
@@ -345,7 +373,7 @@
             				<input type="text" class="form-control" id="" readonly>
             			</div>
             			<div class="form-group">
-            				<label for="">Jenis Barang</label>
+            				<label for="">Satuan Barang</label>
             				<input type="text" class="form-control" id="" readonly>
             			</div>
             			<div class="form-group">
@@ -361,52 +389,20 @@
       </div>
       <!-- /.modal -->
 
-      <!-- Modal Edit Data -->
-	<div class="modal fade" id="modal-edit">
-    	<div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Edit Barang</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <form>
-            	<div class="modal-body">
-            			<div class="form-group">
-            				<label for="">Nomor Barang</label>
-            				<input type="text" class="form-control" id="" placeholder="Edit Nomor Barang ..." required>
-            			</div>
-            			<div class="form-group">
-            				<label for="">Jenis Barang</label>
-            				<input type="email" class="form-control" id="" placeholder="Edit Barang ..." required>
-            			</div>
-            		</div>
-            		<div class="modal-footer justify-content-between">
-            			<button type="button" class="btn btn-danger" data-dismiss="modal"> Kembali</button>
-            			<button type="button" class="btn btn-success swalDefaultSuccess"> Simpan</button>
-            		</div>
-            	</div>
-            </form>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-      <!-- /.modal -->
 
       <!-- Modal Hapus Data -->
 	<div class="modal fade" id="modal-hapus">
     	<div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Hapus Barang</h4>
+              <h4 class="modal-title">Hapus Satuan</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <form>
             	<div class="modal-body">
-            		<h5>Yakin Hapus Barang Ini?</h5>
+            		<h5>Yakin Hapus Satuan Barang Ini?</h5>
             		<div class="modal-footer justify-content-between">
             			<button type="button" class="btn btn-danger" data-dismiss="modal"> Kembali</button>
             			<button type="button" class="btn btn-success swalDefaultSuccess"> Hapus</button>
